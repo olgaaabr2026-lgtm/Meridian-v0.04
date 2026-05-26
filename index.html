@@ -1784,12 +1784,34 @@
 }
 
 .calc-period-labels {
-    display: flex;
-    justify-content: space-between;
+    position: relative;
+    height: 18px;
+    margin-top: 6px;
+}
+
+.calc-period-labels span {
+    position: absolute;
+    transform: translateX(-50%);
     font-size: 11px;
     color: var(--text-secondary);
     font-family: var(--font-mono);
-    margin-top: -4px;
+    white-space: nowrap;
+}
+
+.calc-period-labels span:first-child {
+    transform: none;
+}
+
+.calc-period-labels span:last-child {
+    transform: translateX(-100%);
+}
+
+.calc-market-note {
+    font-size: 11px;
+    color: var(--accent-emerald);
+    font-family: var(--font-mono);
+    margin-top: 8px;
+    opacity: 0.8;
 }
 
 .calc-amount-wrap {
@@ -3074,7 +3096,8 @@
                     Срок инвестирования
                   </label>
                   <span class="calc-period-display">
-                    <span id="periodValue" class="mono">10</span> лет
+                    <span id="periodValue" class="mono">10</span>
+                    <span id="periodSuffix"> лет</span>
                   </span>
                 </div>
                 <input
@@ -3084,11 +3107,14 @@
                   min="1" max="30" value="10" step="1"
                 >
                 <div class="calc-period-labels">
-                  <span>1 год</span>
-                  <span>5</span>
-                  <span>10</span>
-                  <span>20</span>
-                  <span>30 лет</span>
+                  <span style="left:0%">1 год</span>
+                  <span style="left:13.8%">5</span>
+                  <span style="left:31%">10</span>
+                  <span style="left:65.5%">20</span>
+                  <span style="left:100%">30 лет</span>
+                </div>
+                <div class="calc-market-note" id="calcMarketNote">
+                  Рынок: MOEX (Мосбиржа)
                 </div>
               </div>
 
@@ -3726,8 +3752,33 @@
 
     if (!calcBtn) return;
 
+    const RATES_BY_CURRENCY = {
+        RUB: { conservative: 0.08, 
+               balanced: 0.14, 
+               aggressive: 0.22,
+               label: 'MOEX (Мосбиржа)' },
+        AED: { conservative: 0.06, 
+               balanced: 0.12, 
+               aggressive: 0.18,
+               label: 'Tadawul + GCC' },
+        USD: { conservative: 0.07, 
+               balanced: 0.12, 
+               aggressive: 0.17,
+               label: 'Global / S&P' }
+    };
+
     // Активная валюта
     let activeCurrency = { code: 'RUB', symbol: '₽' };
+
+    function updateStrategyRates(currencyCode) {
+        const r = RATES_BY_CURRENCY[currencyCode];
+        const cards = document.querySelectorAll('.strategy-card');
+        const rateKeys = ['conservative','balanced','aggressive'];
+        cards.forEach((card, i) => {
+            const pct = Math.round(r[rateKeys[i]] * 100);
+            card.querySelector('.strategy-rate').textContent = pct + '% / год';
+        });
+    }
 
     // Переключатель валюты
     document.querySelectorAll('.calc-currency-btn')
@@ -3740,13 +3791,26 @@
             code:   btn.dataset.currency,
             symbol: btn.dataset.symbol
           };
+          updateStrategyRates(btn.dataset.currency);
+          document.getElementById('calcMarketNote').textContent = 'Рынок: ' + RATES_BY_CURRENCY[btn.dataset.currency].label;
           if (calcResult.style.display === 'flex') calculate();
         });
       });
 
     // Слайдер срока
     calcPeriod.addEventListener('input', () => {
-        periodValue.textContent = calcPeriod.value;
+        const val = parseInt(calcPeriod.value);
+        periodValue.textContent = val;
+        
+        let suffix = ' лет';
+        const lastDigit = val % 10;
+        const lastTwo = val % 100;
+        if (lastDigit === 1 && lastTwo !== 11) {
+            suffix = ' год';
+        } else if (lastDigit >= 2 && lastDigit <= 4 && (lastTwo < 10 || lastTwo >= 20)) {
+            suffix = ' года';
+        }
+        document.getElementById('periodSuffix').textContent = suffix;
     });
 
     // Переключатель стратегий
@@ -3809,7 +3873,13 @@
 
         // Ставка
         const activeCard = document.querySelector('.strategy-card.active-strategy');
-        let rate = parseFloat(activeCard.dataset.rate);
+        const currencyRates = RATES_BY_CURRENCY[activeCurrency.code];
+        const strategyValue = activeCard.querySelector('input').value;
+        let rate = strategyValue === 'conservative'
+            ? currencyRates.conservative
+            : strategyValue === 'balanced'
+            ? currencyRates.balanced
+            : currencyRates.aggressive;
         if (calcHalal.checked) rate += 0.01;
 
         // Расчёт
