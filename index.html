@@ -468,7 +468,7 @@
         }
 
         /* Video CSS */
-        .video-section { margin-bottom: 64px; }
+        .video-section { margin-bottom: 64px; margin-top: 80px; }
         .video-section .why-header { margin-bottom: 40px; }
         .video-wrap {
             position: relative;
@@ -2189,6 +2189,187 @@
         border-right: none;
     }
 }
+
+/* =========================================
+   ФУТЕР
+   ========================================= */
+
+.footer {
+    background: var(--bg-section);
+    border-top: 1px solid var(--border);
+    margin-top: 80px;
+}
+
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 64px 24px 48px;
+    display: grid;
+    grid-template-columns: 1.4fr 2fr;
+    gap: 64px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-head);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent-emerald);
+    margin-bottom: 16px;
+}
+
+.footer-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    max-width: 280px;
+}
+
+.footer-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.footer-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    letter-spacing: 0.05em;
+}
+
+.footer-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-col-title {
+    font-family: var(--font-head);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+
+.footer-link {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--trans);
+    font-family: var(--font-body);
+}
+
+.footer-link:hover {
+    color: var(--accent-emerald);
+}
+
+/* Нижняя строка */
+.footer-bottom {
+    border-top: 1px solid var(--border);
+}
+
+.footer-bottom-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.footer-copy {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 24px;
+}
+
+.footer-link-sm {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--trans);
+}
+
+.footer-link-sm:hover {
+    color: var(--text-primary);
+}
+
+.footer-langs {
+    display: flex;
+    gap: 4px;
+}
+
+.footer-lang {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--trans);
+    border: 1px solid transparent;
+}
+
+.footer-lang:hover {
+    color: var(--text-primary);
+}
+
+.footer-lang.active {
+    color: var(--accent-emerald);
+    border-color: var(--border);
+}
+
+/* Адаптив */
+@media (max-width: 1024px) {
+    .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 48px 24px 40px;
+    }
+    .footer-nav {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+    .footer-bottom-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    .footer-bottom-links {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+}
     </style>
 </head>
 <body>
@@ -3280,6 +3461,86 @@
         </section>
 
     </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <!-- Логотип и описание -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <svg class="svg-icon icon-lg" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                    </svg>
+                    Meridian
+                </div>
+                <p class="footer-desc">
+                    AI-советник по инвестициям 
+                    для рынков России и Ближнего Востока.
+                    MOEX · Tadawul · Халяль-фильтр.
+                </p>
+                <div class="footer-badges">
+                    <span class="footer-badge">ЦБ РФ</span>
+                    <span class="footer-badge">CBUAE</span>
+                    <span class="footer-badge">ISO 27001</span>
+                </div>
+            </div>
+
+            <!-- Навигация по колонкам -->
+            <div class="footer-nav">
+                <div class="footer-col">
+                    <div class="footer-col-title">Продукт</div>
+                    <a href="#" class="footer-link">Портфель</a>
+                    <a href="#" class="footer-link">AI-сигналы</a>
+                    <a href="#" class="footer-link">Халяль-фильтр</a>
+                    <a href="#" class="footer-link">Калькулятор</a>
+                </div>
+
+                <div class="footer-col">
+                    <div class="footer-col-title">Рынки</div>
+                    <a href="#" class="footer-link">MOEX</a>
+                    <a href="#" class="footer-link">Tadawul</a>
+                    <a href="#" class="footer-link">ADX (ОАЭ)</a>
+                    <a href="#" class="footer-link">Золото · Нефть</a>
+                </div>
+
+                <div class="footer-col">
+                    <div class="footer-col-title">Компания</div>
+                    <a href="#" class="footer-link">О нас</a>
+                    <a href="#" class="footer-link">Блог</a>
+                    <a href="#" class="footer-link">Карьера</a>
+                    <a href="#" class="footer-link">Пресса</a>
+                </div>
+
+                <div class="footer-col">
+                    <div class="footer-col-title">Поддержка</div>
+                    <a href="#" class="footer-link">Документация</a>
+                    <a href="#" class="footer-link">FAQ</a>
+                    <a href="#" class="footer-link">Telegram</a>
+                    <a href="#" class="footer-link">Написать нам</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Нижняя строка -->
+        <div class="footer-bottom">
+            <div class="footer-bottom-inner">
+                <span class="footer-copy">
+                    © 2026 Meridian Technologies. 
+                    Все права защищены.
+                </span>
+                <div class="footer-bottom-links">
+                    <a href="#" class="footer-link-sm">Конфиденциальность</a>
+                    <a href="#" class="footer-link-sm">Условия использования</a>
+                    <a href="#" class="footer-link-sm">Раскрытие рисков</a>
+                </div>
+                <div class="footer-langs">
+                    <span class="footer-lang active">RU</span>
+                    <span class="footer-lang">EN</span>
+                    <span class="footer-lang">AR</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Модальное окно (HTML) -->
     <div class="modal-overlay" id="aiModal">
